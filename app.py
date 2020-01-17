@@ -60,7 +60,8 @@ def handle_message(event):
         client = MongoClient('mongodb://yau1223:pearl1004@cluster0-shard-00-00-jzaki.mongodb.net:27017,cluster0-shard-00-01-jzaki.mongodb.net:27017,cluster0-shard-00-02-jzaki.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority')
         db = client[Authdb]        
         collect = db['mydb']
-        collect.insert({"stock": stock=usespeak[0:4],
+        
+        collect.insert({"stock": usespeak[0:4],
                     "data": 'care_stock',
                     "bs": usespeak[4:5],
                     "price": float(usespeak[5:]),
