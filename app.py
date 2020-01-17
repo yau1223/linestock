@@ -13,6 +13,11 @@ from linebot.models import *
 import mongodb
 import re
 
+from pymongo import MongoClient
+import pymongo
+import urllib.parse
+from datetime import datetime 
+
 app = Flask(__name__)
 
 # 必須放上自己的Channel Access Token
@@ -49,9 +54,24 @@ def handle_message(event):
     
     if re.match('[0-9]{4}[<>][0-9]',usespeak): # 先判斷是否是使用者要用來存股票的
         line_bot_api.push_message(uid, TextSendMessage(usespeak[0:4]+'你要新增這個2'))
-        mongodb.write_user_stock_fountion(stock=usespeak[0:4], bs=usespeak[4:5], price=usespeak[5:])
+        
+        
+        Authdb='yau1223'
+        client = MongoClient('mongodb://yau1223:pearl1004@cluster0-shard-00-00-jzaki.mongodb.net:27017,cluster0-shard-00-01-jzaki.mongodb.net:27017,cluster0-shard-00-02-jzaki.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority')
+        db = client[Authdb]        
+        collect = db['mydb']
+        collect.insert({"stock": stock=usespeak[0:4],
+                    "data": 'care_stock',
+                    "bs": usespeak[4:5],
+                    "price": float(usespeak[5:]),
+                    "date_info": datetime.datetime.utcnow()
+                    })
+        
+        
+        
+        #mongodb.write_user_stock_fountion(stock=usespeak[0:4], bs=usespeak[4:5], price=usespeak[5:])
         line_bot_api.push_message(uid, TextSendMessage(usespeak[0:4]+'已經儲存成功'))
-        line_bot_api.push_message(uid, TextSendMessage(usespeak[0:4]+'你要新增這個3'))
+        
         return 0
 
     
