@@ -16,7 +16,7 @@ import re
 from pymongo import MongoClient
 import pymongo
 import urllib.parse
-from datetime import datetime 
+import datetime
 
 app = Flask(__name__)
 
@@ -56,17 +56,20 @@ def handle_message(event):
         line_bot_api.push_message(uid, TextSendMessage(usespeak[0:4]+'你要新增這個2'))
         
         
+
+
         Authdb='yau1223'
         client = MongoClient('mongodb://yau1223:pearl1004@cluster0-shard-00-00-jzaki.mongodb.net:27017,cluster0-shard-00-01-jzaki.mongodb.net:27017,cluster0-shard-00-02-jzaki.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority')
         db = client[Authdb]        
         collect = db['mydb']
         
-        collect.insert({"stock": usespeak[0:4],
-                    "data": 'care_stock',
-                    "bs": usespeak[4:5],
-                    "price": float(usespeak[5:]),
-                    "date_info": datetime.datetime.utcnow()
-                    })
+        collect.insert({"stock": '2330',
+                        "data": 'care_stock',
+                        "bs": '>',
+                        "price": float('1'),
+                        "date_info": datetime.datetime.utcnow()
+                        })
+        
         
         
         
